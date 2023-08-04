@@ -84,7 +84,7 @@ CREATE TABLE token_transfers
     token_address FixedString(42),
     from_address FixedString(42),
     to_address FixedString(42),
-    value Decimal(76, 0) CODEC(ZSTD(1)),
+    value Int64 CODEC(ZSTD(1)),
     transaction_hash FixedString(66),
     log_index Int64 CODEC(ZSTD(1)),
     block_timestamp DateTime CODEC(ZSTD(1)),

@@ -26,6 +26,7 @@ export GCSKEY=$gcskey
 export GCSSECRET=$gcssecret
 
 ./init.sh
+
 nohup ./blocks.sh > blocks.log 2>&1 &
 nohup ./tx.sh > tx.log 2>&1 &
 nohup ./logs.sh > logs.log 2>&1 &
