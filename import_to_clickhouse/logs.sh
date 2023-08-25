@@ -6,7 +6,6 @@ chpass=$CHPASS
 bucket=$LOGS_BUCKET
 gcskey=$GCSKEY
 gcssecret=$GCSSECRET
-
 # Check if all variables are set
 if [[ -z $bucket || -z $chhost || -z $chpass || -z $gcskey || -z $gcssecret ]]; then
     echo "Одна из переменных окружения не установлена. Убедитесь, что все переменные (LOGS_BUCKET, CH_HOST, CH_PASSWORD, GCS_API_KEY, GCS_API_SECRET) установлены."
@@ -39,8 +38,7 @@ for file in $FILES; do
         toInt64(block_number),
         toFixedString(block_hash, 66)
     FROM s3('https://storage.googleapis.com/$bucket/$filename',
-            $gcskey,
-            $gcssecret,
+           '$gcskey', '$gcssecret',
        'CSV', 'log_index String, transaction_hash String, transaction_index String, address String, data String, topic0 String, topic1 String, topic2 String, topic3 String, block_timestamp String, block_number String, block_hash String')
 SETTINGS input_format_allow_errors_num=10, input_format_allow_errors_ratio=0.01, format_csv_delimiter = ',';
 "

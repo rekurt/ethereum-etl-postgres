@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Get values from environment variables
 chhost=$CHHOST
 chpass=$CHPASS
 bucket=$TXS_BUCKET

@@ -1,23 +1,16 @@
 #!/bin/bash
-
-echo "Этот скрипт импортирует данные трейсов из GCS в Clickhouse."
-echo "Для работы необходимо установить gsutil и настроить его для работы с вашим GCS bucket."
-echo "Для работы необходимо установить clickhouse-client и настроить его для работы с вашим экземпляром Clickhouse."
-echo ""
-echo "Пожалуйста, введите следующие переменные:"
-
-# Запрашиваем у пользователя 5 переменных
-read -p "Введите путь до GCS папки с экспортированными данными трейсов (без имени файла и расширения, пример: 'ppool2/bigquery-public-data:crypto_ethereum.traces_raw/'): " bucket
-read -p "Введите адрес хоста Clickhouse: " chhost
-read -p "Введите пароль от Clickhouse: " chpass
-read -p "Введите ключ API от GCS: " gcskey
-read -p "Введите секретный ключ от GCS: " gcssecret
-read -p "Введите номер партиции для старта : " start
+# Get values from environment variables
+chhost=$CHHOST
+chpass=$CHPASS
+bucket=$TRACES_BUCKET
+gcskey=$GCSKEY
+gcssecret=$GCSSECRET
+start=000000000103
 
 # Получаем список всех gz файлов из указанной папки на GCS
 FILES=$(gsutil ls gs://$bucket | grep ".gz$")
 START="gs://$bucket/$start.gz"
-
+echo "Начинаем обработку файлов из $bucket c $STARTPOINT"
 # Проходимся по каждому файлу и выполняем запрос в clickhouse-client
 for file in $FILES; do
     echo "Обработка $file..."
@@ -26,7 +19,7 @@ for file in $FILES; do
     if [[ "$file" > $START ]]; then
     
     clickhouse-client --host $chhost --secure --password $chpass -q "
-    INSERT INTO traces
+    INSERT INTO traces_new
     SELECT
         toFixedString(transaction_hash, 66) AS transaction_hash,
         toInt64OrNull(transaction_index) AS transaction_index,

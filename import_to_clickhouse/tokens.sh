@@ -1,17 +1,11 @@
 #!/bin/bash
 
-echo "Этот скрипт импортирует данные токенов из GCS в Clickhouse."
-echo "Для работы необходимо установить gsutil и настроить его для работы с вашим GCS bucket."
-echo "Для работы необходимо установить clickhouse-client и настроить его для работы с вашим экземпляром Clickhouse."
-echo ""
-echo "Пожалуйста, введите следующие переменные:"
-
-# Запрашиваем у пользователя 5 переменных
-read -p "Введите путь до GCS папки с экспортированными данными токенов (без имени файла и расширения, пример: 'ppool2/bigquery-public-data:crypto_ethereum.tokens_raw/'): " bucket
-read -p "Введите адрес хоста Clickhouse: " chhost
-read -p "Введите пароль от Clickhouse: " chpass
-read -p "Введите ключ API от GCS: " gcskey
-read -p "Введите секретный ключ от GCS: " gcssecret
+# Get values from environment variables
+chhost=$CHHOST
+chpass=$CHPASS
+bucket=$TOKENS_BUCKET
+gcskey=$GCSKEY
+gcssecret=$GCSSECRET
 
 # Получаем список всех gz файлов из указанной папки на GCS
 FILES=$(gsutil ls gs://$bucket | grep ".gz$")

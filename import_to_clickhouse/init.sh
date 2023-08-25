@@ -160,7 +160,7 @@ CREATE TABLE traces
     gas Int64 CODEC(ZSTD(1)),
     gas_used Int64 CODEC(ZSTD(1)),
     subtraces Int64 CODEC(ZSTD(1)),
-    trace_address FixedString(8192),
+    trace_address String,
     error String,
     status Int32 CODEC(ZSTD(1)),
     block_timestamp DateTime CODEC(ZSTD(1)),
